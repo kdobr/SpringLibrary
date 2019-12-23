@@ -1,7 +1,14 @@
 package hibernate.model.editions;
 
+import lombok.*;
+
 import javax.persistence.*;
 import java.util.Objects;
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+
 
 @Entity
 @Table(name = "book")
@@ -16,27 +23,7 @@ public abstract class Edition {
     @Column(name = "title")
     private String title;
 
-    public Edition() {
-    }
-
     public Edition(String title) {
-        this.title = title;
-    }
-
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
         this.title = title;
     }
 

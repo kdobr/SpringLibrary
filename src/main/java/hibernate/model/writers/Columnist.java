@@ -1,6 +1,9 @@
 package hibernate.model.writers;
 
 import hibernate.model.editions.Journal;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
@@ -11,6 +14,9 @@ import java.util.Objects;
 
 @Entity
 @DiscriminatorValue("Columnist")
+@Setter
+@Getter
+@EqualsAndHashCode
 public class Columnist extends Writer {
 
 
@@ -30,15 +36,6 @@ public class Columnist extends Writer {
     public Columnist(String name) {
         super(name);
     }
-
-    public List<Journal> getJournalList() {
-        return journalList ;
-    }
-
-    public void setJournalList(List<Journal> journalList) {
-        this.journalList = journalList;
-    }
-
 
     public void addJournal(Journal journal) {
         if (journalList == null) {

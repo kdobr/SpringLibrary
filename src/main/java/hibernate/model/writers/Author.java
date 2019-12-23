@@ -1,6 +1,10 @@
 package hibernate.model.writers;
 
 import hibernate.model.editions.Book;
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
@@ -11,6 +15,9 @@ import java.util.Objects;
 
 @Entity
 @DiscriminatorValue("Author")
+@Getter
+@Setter
+@AllArgsConstructor
 public class Author extends Writer {
 
     @ManyToMany(fetch = FetchType.LAZY,
@@ -23,19 +30,10 @@ public class Author extends Writer {
     @Fetch(FetchMode.JOIN)
     private List<Book> bookList;
 
-    public Author() {
-    }
+    public Author() {   }
 
     public Author(String name) {
         super(name);
-    }
-
-    public List<Book> getBookList() {
-        return bookList;
-    }
-
-    public void setBookList(List<Book> bookList) {
-        this.bookList = bookList;
     }
 
     public void addBook(Book book) {
@@ -50,21 +48,11 @@ public class Author extends Writer {
         if (this == o) return true;
         if (!(o instanceof Author)) return false;
         Author author = (Author) o;
-        return getId() == author.getId() &&
-                Objects.equals(getName(), author.getName()) &&
-                Objects.equals(getBookList(), author.getBookList());
+        return Objects.equals(getId(), author.getId());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getName(), getBookList());
-    }
-
-    @Override
-    public String toString() {
-        return "Author{" +
-                "id=" + this.getId() +
-                ", name='" + this.getName() + '\'' +
-                '}';
+        return Objects.hash(getBookList());
     }
 }

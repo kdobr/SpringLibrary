@@ -2,6 +2,9 @@ package hibernate.model.editions;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import hibernate.model.writers.Columnist;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
@@ -12,7 +15,9 @@ import java.util.Objects;
 
 @Entity
 @DiscriminatorValue("Journal")
-@JsonIgnoreProperties(value= {"columnistList"})
+@Getter
+@Setter
+@ToString
 
 public class Journal extends Edition {
 
@@ -30,14 +35,6 @@ public class Journal extends Edition {
 
     public Journal(String title) {
         super(title);
-    }
-
-    public List<Columnist> getColumnistList() {
-        return columnistList;
-    }
-
-    public void setColumnistList(List<Columnist> columnistList) {
-        this.columnistList = columnistList;
     }
 
     public void addColumnist(Columnist columnist) {

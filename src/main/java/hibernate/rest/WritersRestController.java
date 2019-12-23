@@ -1,17 +1,16 @@
 package hibernate.rest;
 
 
-import hibernate.dao.*;
-import hibernate.dto.AuthorGetDto;
-import hibernate.dto.ColumnistGetDto;
-import hibernate.dto.WriterGetDto;
+import hibernate.dto.writers.*;
 import hibernate.model.writers.Author;
 import hibernate.model.writers.Columnist;
-import hibernate.model.writers.Writer;
+import hibernate.service.writers.AuthorService;
+import hibernate.service.writers.ColumnistService;
+import hibernate.service.writers.WriterService;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -20,70 +19,90 @@ import java.util.stream.Collectors;
 public class WritersRestController {
 
     @Autowired
-    private AuthorDAO authorDAO;
+    private AuthorService authorService;
+    @Autowired
+    private ColumnistService columnistService;
+    @Autowired
+    private WriterService writerService;
 
     @Autowired
-	private ColumnistDAO columnistDAO;
+    private ModelMapper mapper;
 
-    @Autowired
-	private WriterDAO writerDAO;
+    @PostMapping("/author")
+    public void addAuthor(@RequestParam String name) {
+        authorService.addAuthor(name);
+    }
 
-	@PostMapping("/author")
-	public void addAuthor(@RequestParam String name) {
-		authorDAO.addAuthor(name);
-	}
+    @PostMapping("/columnist")
+    public void addColumnist(@RequestParam String name) {
+        columnistService.addColumnist(name);
+    }
 
-	@PostMapping("/columnist")
-	public void addColumnist(@RequestParam String name) {
-		columnistDAO.addColumnist(name);
-	}
+    @DeleteMapping("/author")
+    public void deleteAuthor(@RequestParam String name) {
+        System.out.println("hello");
+        authorService.deleteAuthor(name);
+    }
 
-	@DeleteMapping("/author")
-	public void deleteAuthor(@RequestParam String name) {
-		authorDAO.deleteAuthor(name);
-	}
+    @DeleteMapping("/columnist")
+    public void deleteColumnist(@RequestParam String name) {
+        columnistService.deleteColumnist(name);
+    }
 
-	@DeleteMapping("/columnist")
-	public void deleteColumnist(@RequestParam String name) {
-		columnistDAO.deleteColumnist(name);
-	}
-
-	@GetMapping("/writers")
-	public List<WriterGetDto> getAllWriters() {
-		return writerDAO.getAllWriters().stream().map(a-> new WriterGetDto(a.getId(), a.getName())).collect(Collectors.toList());
-	}
+    @GetMapping("/writers")
+    public List<WriterForListDto> getAllWriters() {
+        return writerService.getAllWriters().stream().map(a -> new WriterForListDto(a.getId(), a.getName())).collect(Collectors.toList());
+    }
 
     @GetMapping("/authors")
-    public List<AuthorGetDto> getAllAuthors() {
-		return authorDAO.getAllAuthors().stream().map(a-> new AuthorGetDto(a.getId(), a.getName())).collect(Collectors.toList());
+    public List<AuthorForListDto> getAllAuthors() {
+        return authorService.getAllAuthors().stream().map(a -> new AuthorForListDto(a.getId(), a.getName())).collect(Collectors.toList());
     }
+
     @GetMapping("/columnists")
-    public List<ColumnistGetDto> getAllColumnists() {
-		return columnistDAO.getAllColumnist().stream().map(a-> new ColumnistGetDto(a.getId(), a.getName())).collect(Collectors.toList());
+    public List<ColumnistForListDto> getAllColumnists() {
+        return columnistService.getAllColumnist().stream().map(a -> new ColumnistForListDto(a.getId(), a.getName())).collect(Collectors.toList());
     }
 
     @GetMapping("/author")
-    public Author getAuthorByName(@RequestParam String name) {
-        return authorDAO.getAuthorByName(name);
+    public AuthorDto getAuthorByName(@RequestParam String name) {
+        return convertToAuthorDto(authorService.getAuthorByName(name));
     }
 
-	@GetMapping("/columnist")
-	public Columnist getColumnistByName(@RequestParam String name) {
-		return columnistDAO.getColumnistByName(name);
-	}
+    @GetMapping("/columnist")
+    public ColumnistDto getColumnistByName(@RequestParam String name) {
+        return convertToColumnistDto(columnistService.getColumnistByName(name));
+    }
 
-	//use DTO, here it's more complicated then Author class
-	@GetMapping("/author/{id}")
-	public AuthorGetDto getAuthorById(@PathVariable int id) {
-		Author author = authorDAO.getAuthorById(id);
-		return new AuthorGetDto(author.getId(), author.getName());
-	}
+    @GetMapping("/author/{id}")
+    public AuthorDto getAuthorById(@PathVariable int id) {
+        return convertToAuthorDto(authorService.getAuthorById(id));
+    }
 
-	//use standard class Columnist
-	@GetMapping("/columnist/{id}")
-	public Columnist getColumnistById(@PathVariable int id) {
-		return columnistDAO.getColumnistById(id);
-	}
+    @GetMapping("/columnist/{id}")
+    public ColumnistDto getColumnistById(@PathVariable int id) {
+        return convertToColumnistDto(columnistService.getColumnistById(id));
+    }
+
+    @GetMapping("/columnist/add")
+    public void addJournalToColumnist(@RequestParam String name, String title) {
+        columnistService.addJournalToColumnist(name, title);
+    }
+
+    @GetMapping("/author/add")
+    public void addBookToAuthor(@RequestParam String name, String title) {
+        authorService.addBookToAuthor(name, title);
+    }
+
+    private AuthorDto convertToAuthorDto(Author author) {
+        AuthorDto dto = mapper.map(author, AuthorDto.class);
+        return dto;
+    }
+
+    private ColumnistDto convertToColumnistDto(Columnist columnist) {
+        ColumnistDto dto = mapper.map(columnist, ColumnistDto.class);
+        return dto;
+    }
 }
 
 

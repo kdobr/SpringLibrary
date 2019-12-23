@@ -2,6 +2,10 @@ package hibernate.model.editions;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import hibernate.model.writers.Author;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
@@ -12,7 +16,10 @@ import java.util.Objects;
 
 @Entity
 @DiscriminatorValue("Book")
-@JsonIgnoreProperties(value= {"authorList"})
+@Getter
+@Setter
+@ToString
+@AllArgsConstructor
 public class Book extends Edition {
 
     @ManyToMany(fetch = FetchType.LAZY,
@@ -31,13 +38,7 @@ public class Book extends Edition {
         super(title);
     }
 
-    public List<Author> getAuthorList() {
-        return authorList;
-    }
 
-    public void setAuthorList(List<Author> authorList) {
-        this.authorList = authorList;
-    }
 
     public void addAuthor(Author author) {
         if (authorList == null) {
@@ -50,14 +51,14 @@ public class Book extends Edition {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Book)) return false;
-        if (!super.equals(o)) return false;
-        Book book = (Book) o;
-        return Objects.equals(getAuthorList(), book.getAuthorList());
+        return super.equals(o);
+//        Book book = (Book) o;
+//        return Objects.equals(getAuthorList(), book.getAuthorList());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), getAuthorList());
+        return Objects.hash(super.hashCode());
     }
 
     @Override

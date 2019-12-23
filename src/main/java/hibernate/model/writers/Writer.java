@@ -2,12 +2,17 @@ package hibernate.model.writers;
 
 import hibernate.model.editions.Book;
 import hibernate.model.editions.Edition;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-
+@Getter
+@Setter
+@NoArgsConstructor
 @Entity
 @Table(name = "author")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
@@ -22,36 +27,29 @@ public abstract class Writer {
     private String name;
 
 
-    public Writer() {
-    }
+//    public Writer() {
+//    }
 
     public Writer(String name) {
         this.name = name;
     }
 
 
-    public int getId() {
-        return id;
-    }
+//    public int getId() {
+//        return id;
+//    }
+//
+//    public void setId(int id) {
+//        this.id = id;
+//    }
+//
+//    public String getName() {
+//        return name;
+//    }
+//
+//    public void setName(String name) {
+//        this.name = name;
+//    }
 
-    public void setId(int id) {
-        this.id = id;
-    }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-
-    @Override
-    public String toString() {
-        return this.getClass().getName() + "{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                '}';
-    }
 }
