@@ -4,7 +4,6 @@ package library.rest.editions;
 import library.dto.editions.EditionForListDto;
 import library.service.editions.EditionService;
 import lombok.AllArgsConstructor;
-import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;

@@ -37,7 +37,8 @@ public class ColumnistRestController {
 
     @GetMapping("/columnists")
     public List<ColumnistForListDto> getAllColumnists() {
-        return columnistService.getAllColumnist().stream().map(a -> new ColumnistForListDto(a.getId(), a.getName())).collect(Collectors.toList());
+        return columnistService.getAllColumnist().stream()
+                .map(a -> new ColumnistForListDto(a.getId(), a.getName())).collect(Collectors.toList());
     }
 
     @GetMapping("/columnist")

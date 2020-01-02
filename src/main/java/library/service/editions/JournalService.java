@@ -17,9 +17,8 @@ public interface JournalService {
 
     Journal getJournalById(int id);
 
-    List<Journal> getAllJournals() ;
+    List<Journal> getAllJournals();
 
-    Journal updateJournal(String oldTitle, String newTitle) ;
-
+    Journal updateJournal(String oldTitle, String newTitle);
 }
 

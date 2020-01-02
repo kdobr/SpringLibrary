@@ -1,7 +1,6 @@
 package library.service.writers;
 
 import library.dto.editions.BookAddDto;
-import library.dto.editions.BookDto;
 import library.dto.writers.AuthorAddDto;
 import library.model.writers.Author;
 

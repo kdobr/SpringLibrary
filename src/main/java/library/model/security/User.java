@@ -1,6 +1,5 @@
 package library.model.security;
 
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

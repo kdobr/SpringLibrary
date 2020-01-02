@@ -1,9 +1,6 @@
 package library.model.writers;
 
 import library.model.editions.Book;
-import library.model.editions.Journal;
-import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.Fetch;
@@ -31,7 +28,8 @@ public class Author extends Writer {
     @Fetch(FetchMode.JOIN)
     private List<Book> bookList;
 
-    public Author() {   }
+    public Author() {
+    }
 
     public Author(String name) {
         super(name);

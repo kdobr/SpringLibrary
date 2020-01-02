@@ -1,9 +1,7 @@
 package library.config;
 
-import library.repositories.security.RoleRepository;
+import library.model.security.User;
 import library.repositories.security.UserRepository;
-import library.service.security.UserService;
-import library.service.security.UserServiceImpl;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,28 +11,22 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
-import javax.sql.DataSource;
+import java.util.ArrayList;
 
 @Configuration
 @EnableWebSecurity
 @AllArgsConstructor
 public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private final UserService userService;
-private UserRepository userRepository;
-private RoleRepository roleRepository;
-//    private final DataSource dataSource;
-//
-//    @Override
-//    public void configure(AuthenticationManagerBuilder auth) throws Exception {
-//        auth.jdbcAuthentication().dataSource(dataSource);
-//    }
+    private UserRepository userRepository;
 
     @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+    protected void configure(AuthenticationManagerBuilder auth) {
         auth.authenticationProvider(authenticationProvider());
     }
 
@@ -58,14 +50,20 @@ private RoleRepository roleRepository;
     @Bean
     public DaoAuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider auth = new DaoAuthenticationProvider();
-        auth.setUserDetailsService(userService); //set the custom user details service
+        auth.setUserDetailsService(userDetailsService()); //set the custom user details service
         auth.setPasswordEncoder(passwordEncoder()); //set the password encoder - bcrypt
         return auth;
     }
 
-//    @Bean
-//    public UserServiceImpl userService ()
-//    {
-//        return new UserServiceImpl(passwordEncoder(),userRepository, roleRepository);
-//    }
+    @Bean
+    public UserDetailsService userDetailsService() {
+
+        return username -> {
+            User user = userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException(username));
+            ArrayList<SimpleGrantedAuthority> authorities = new ArrayList<>();
+            authorities.add(new SimpleGrantedAuthority(user.getRole().getName()));
+            return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(),
+                    authorities);
+        };
+    }
 }

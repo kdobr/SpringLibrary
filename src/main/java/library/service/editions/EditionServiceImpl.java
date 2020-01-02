@@ -16,7 +16,6 @@ import java.util.List;
 @AllArgsConstructor
 public class EditionServiceImpl implements EditionService {
 
-
     private EditionRepository editionRepository;
     private ModelMapper mapper;
 

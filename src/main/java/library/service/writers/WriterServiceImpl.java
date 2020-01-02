@@ -24,6 +24,4 @@ public class WriterServiceImpl implements WriterService {
         Page<WriterForListDto> dtoPage = resultPage.map(p -> mapper.map(p, WriterForListDto.class));
         return dtoPage.getContent();
     }
-
-
 }

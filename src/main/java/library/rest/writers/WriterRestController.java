@@ -4,7 +4,6 @@ package library.rest.writers;
 import library.dto.writers.WriterForListDto;
 import library.service.writers.WriterService;
 import lombok.AllArgsConstructor;
-import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;

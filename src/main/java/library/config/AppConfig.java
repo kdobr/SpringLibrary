@@ -4,7 +4,6 @@ import com.mchange.v2.c3p0.ComboPooledDataSource;
 import lombok.AllArgsConstructor;
 import org.hibernate.jpa.HibernatePersistenceProvider;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -14,9 +13,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
-import org.springframework.security.crypto.factory.PasswordEncoderFactories;
-import org.springframework.security.crypto.password.NoOpPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -42,9 +39,10 @@ public class AppConfig implements WebMvcConfigurer {
         return new ModelMapper();
     }
 
-//    @Bean
-//    public  PasswordEncoder encoder()
-//    { return PasswordEncoderFactories.createDelegatingPasswordEncoder();}
+    @Bean
+    public BCryptPasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
 
     @Bean
     public DataSource myDataSource() {
@@ -76,8 +74,7 @@ public class AppConfig implements WebMvcConfigurer {
 
     private int getIntProperty(String propName) {
         String propVal = env.getProperty(propName);
-        int intPropVal = Integer.parseInt(propVal);
-        return intPropVal;
+        return Integer.parseInt(propVal);
     }
 
     @Bean

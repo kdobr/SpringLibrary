@@ -1,7 +1,6 @@
 package library.model.writers;
 
 import library.model.editions.Journal;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.Fetch;
@@ -61,6 +60,6 @@ public class Columnist extends Writer {
         return "Columnist{" +
                 "id=" + this.getId() +
                 ", name='" + this.getName() + '\'' +
-                               '}';
+                '}';
     }
 }
