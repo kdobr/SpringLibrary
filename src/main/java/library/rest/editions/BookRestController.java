@@ -14,6 +14,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -46,16 +48,17 @@ public class BookRestController {
         logger.info("book with id: {} deleted", id);
     }
 
-    @GetMapping("/books")
+    @GetMapping("/book")
     public List<BookForListDto> getAllBooks(int page, int size, String sort) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Pageable pageable = PageRequest.of(page, size, Sort.by(sort));
         logger.info("made pageable with {} page, {} size, {} sort", page, size, sort);
         return bookService.getAllBooks(pageable);
 
     }
 
-    @GetMapping("/book")
-    public BookDto getBookByTitle(@RequestParam String title) {
+    @GetMapping("/book/title/{title}")
+    public BookDto getBookByTitle(@PathVariable String title) {
         Book book = bookService.getBookByTitle(title);
         BookDto bookDto = convertToBookDto(book);
         logger.info("we've converted it to BookDto");
